@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pavement QA/QC System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Split CSS files -->
+    <link rel="stylesheet" href="/static/base-styles.css">
+    <link rel="stylesheet" href="/static/analysis-styles.css">
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+    
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-road"></i>
+                <h1>Pavement QA/QC System</h1>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="alert alert-success" id="successAlert">
+                <div class="alert-content">
+                    <i class="fas fa-check-circle"></i>
+                    <div id="successMessage"></div>
+                </div>
+            </div>
+            
+            <div class="alert alert-error" id="errorAlert">
+                <div class="alert-content">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div id="errorMessage"></div>
+                </div>
+            </div>
+            
+            <div class="tab-container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="upload">Upload Data</div>
+                    <div class="tab" data-tab="analysis">Analysis Results</div>
+                </div>
+                
+                <div class="tab-content active" id="upload">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Upload Pavement Management Data</h2>
+                            <a href="/api/sample-data" class="btn btn-secondary btn-sm" id="downloadSample">
+                                <i class="fas fa-download"></i> Download Sample
+                            </a>
+                        </div>
+                        
+                        <div class="upload-area">
+                            <div class="file-input-group">
+                                <label>
+                                    <i class="fas fa-file-csv"></i>
+                                    Current PMP Data
+                                </label>
+                                <div class="file-input" id="currentDataUpload">
+                                    <input type="file" hidden id="currentData" accept=".csv,.xlsx,.xls" multiple>
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Drag and drop your files here</p>
+                                    <p>or <span>browse files</span></p>
+                                </div>
+                                <button class="btn btn-primary upload-btn" onclick="document.getElementById('currentData').click()">
+                                    <i class="fas fa-file-upload"></i> Upload Excel/CSV File
+                                </button>
+                                <ul class="file-list" id="currentFileList"></ul>
+                            </div>
+                            
+                            <div class="file-input-group">
+                                <label>
+                                    <i class="fas fa-history"></i>
+                                    Historical PMP Data (Optional)
+                                </label>
+                                <div class="file-input" id="historicalDataUpload">
+                                    <input type="file" hidden id="historicalData" accept=".csv,.xlsx,.xls" multiple>
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Drag and drop your files here</p>
+                                    <p>or <span>browse files</span></p>
+                                </div>
+                                <button class="btn btn-primary upload-btn" onclick="document.getElementById('historicalData').click()">
+                                    <i class="fas fa-file-upload"></i> Upload Excel/CSV File
+                                </button>
+                                <ul class="file-list" id="historicalFileList"></ul>
+                            </div>
+                            
+                            <div class="file-input-group">
+                                <label>
+                                    <i class="fas fa-tools"></i>
+                                    Maintenance History Data (Optional)
+                                </label>
+                                <div class="file-input" id="maintenanceDataUpload">
+                                    <input type="file" hidden id="maintenanceData" accept=".csv,.xlsx,.xls" multiple>
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Drag and drop your files here</p>
+                                    <p>or <span>browse files</span></p>
+                                </div>
+                                <button class="btn btn-primary upload-btn" onclick="document.getElementById('maintenanceData').click()">
+                                    <i class="fas fa-file-upload"></i> Upload Excel/CSV File
+                                </button>
+                                <ul class="file-list" id="maintenanceFileList"></ul>
+                            </div>
+
+                            <div class="file-input-group">
+                                <label>
+                                    <i class="fas fa-sliders-h"></i>
+                                    Manual PCI Ranges (Optional)
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="text" id="manualRanges" class="form-control" 
+                                           placeholder="Enter ranges in format: 0-10,20-30,50-70">
+                                    <small class="form-text text-muted">Specify PCI ranges for manual review, comma-separated (e.g., 0-10,50-60)</small>
+                                </div>
+                            </div>
+                            
+                            <div class="btn-group">
+                                <button class="btn btn-primary" id="analyzeBtn">
+                                    <i class="fas fa-chart-line"></i> Analyze Data
+                                </button>
+                                <button class="btn btn-secondary" id="resetBtn">
+                                    <i class="fas fa-redo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="analysis">
+                    <div class="stats-container" id="statsContainer">
+                        <div class="stat-card">
+                            <div class="stat-title">Total Sections</div>
+                            <div class="stat-value" id="totalSections">-</div>
+                            <div class="stat-detail">sections analyzed</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-title">Anomalies Found</div>
+                            <div class="stat-value" id="anomaliesCount">-</div>
+                            <div class="stat-detail">sections need review</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-title">Review Percentage</div>
+                            <div class="stat-value" id="reviewPercentage">-</div>
+                            <div class="stat-detail">of network needs attention</div>
+                        </div>
+                    </div>
+                    
+                    <div class="charts-container" id="chartsContainer">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <div class="chart-title">PCI Distribution</div>
+                                <div class="chart-actions">
+                                    <button>
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-content">
+                                <img src="" alt="PCI Distribution" class="chart-image" id="pciDistributionChart">
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <div class="chart-title">PCI by Road Category</div>
+                                <div class="chart-actions">
+                                    <button>
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-content">
+                                <img src="" alt="PCI by Road Category" class="chart-image" id="pciCategoryChart">
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <div class="chart-title">Historical vs Current PCI</div>
+                                <div class="chart-actions">
+                                    <button>
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-content">
+                                <img src="" alt="Historical vs Current PCI" class="chart-image" id="pciComparisonChart">
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <div class="chart-title">Anomaly Map</div>
+                                <div class="chart-actions">
+                                    <button>
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-content">
+                                <img src="" alt="Anomaly Map" class="chart-image" id="anomalyMapChart">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Sections Requiring Review</h2>
+                            <button class="btn btn-secondary btn-sm" id="exportAnomaliesBtn">
+                                <i class="fas fa-file-export"></i> Export to CSV
+                            </button>
+                        </div>
+                        
+                        <div class="analysis-container">
+                            <div>
+                                <ul class="anomaly-list" id="anomalyList">
+                                    <!-- Anomalies will be added here dynamically -->
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <!-- Improved Filter UI -->
+                                <div class="filter-panel">
+                                    <div class="filter-header">
+                                        <h3 class="filter-title">
+                                            <i class="fas fa-filter"></i> Filter
+                                        </h3>
+                                        <button class="filter-clear" id="clearAllFilters">
+                                            <i class="fas fa-times-circle"></i> Clear All
+                                        </button>
+                                    </div>
+
+                                    <div class="filter-badges" id="activeFilters">
+                                        <!-- Active filters will appear here -->
+                                    </div>
+
+                                    <div class="filter-section">
+                                        <div class="filter-section-header">
+                                            <span>Confidence Level</span>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="filter-section-content">
+                                            <div class="filter-option">
+                                                <input type="checkbox" id="highConfidence" class="filter-checkbox" checked>
+                                                <label for="highConfidence">
+                                                    <i class="fas fa-circle confidence-high"></i> High
+                                                </label>
+                                                <span class="count">0</span>
+                                            </div>
+                                            <div class="filter-option">
+                                                <input type="checkbox" id="mediumConfidence" class="filter-checkbox" checked>
+                                                <label for="mediumConfidence">
+                                                    <i class="fas fa-circle confidence-medium"></i> Medium
+                                                </label>
+                                                <span class="count">0</span>
+                                            </div>
+                                            <div class="filter-option">
+                                                <input type="checkbox" id="lowConfidence" class="filter-checkbox" checked>
+                                                <label for="lowConfidence">
+                                                    <i class="fas fa-circle confidence-low"></i> Low
+                                                </label>
+                                                <span class="count">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="filter-section">
+                                        <div class="filter-section-header">
+                                            <span>Review Type</span>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="filter-section-content">
+                                            <div class="filter-option">
+                                                <input type="checkbox" id="desktopReview" class="filter-checkbox" checked>
+                                                <label for="desktopReview">
+                                                    <i class="fas fa-desktop review-desktop"></i> Desktop
+                                                </label>
+                                                <span class="count">0</span>
+                                            </div>
+                                            <div class="filter-option">
+                                                <input type="checkbox" id="fieldReview" class="filter-checkbox" checked>
+                                                <label for="fieldReview">
+                                                    <i class="fas fa-car review-field"></i> Field
+                                                </label>
+                                                <span class="count">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="filter-section">
+                                        <div class="filter-section-header">
+                                            <span>PCI Range</span>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="filter-section-content">
+                                            <div class="range-slider">
+                                                <input type="range" min="0" max="100" value="0" class="range-min" id="min-pci">
+                                                <input type="range" min="0" max="100" value="100" class="range-max" id="max-pci">
+                                                <div class="range-track"></div>
+                                                <div class="range-values">
+                                                    <span id="min-value">0</span> - <span id="max-value">100</span> PCI
+                                                </div>
+                                                <div class="range-input-fields">
+                                                    <div class="range-input-group">
+                                                        <label for="min-pci-input">Min:</label>
+                                                        <input type="number" id="min-pci-input" min="0" max="100" value="0" class="range-input">
+                                                    </div>
+                                                    <div class="range-input-group">
+                                                        <label for="max-pci-input">Max:</label>
+                                                        <input type="number" id="max-pci-input" min="0" max="100" value="100" class="range-input">
+                                                    </div>
+                                                    <button class="btn btn-secondary btn-sm" id="applyPciRange">Apply</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="filter-search">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" id="searchAnomalies" placeholder="Search section ID or reason...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div class="modal" id="chartModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalChartTitle">Chart Title</h2>
+            </div>
+            <div class="modal-body">
+                <img src="" alt="Chart" id="modalChartImage" style="width: 100%;">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Split JavaScript files -->
+    <script src="/static/pavement-core.js"></script>
+    <script src="/static/pavement-analysis.js"></script>
+</body>
+</html>

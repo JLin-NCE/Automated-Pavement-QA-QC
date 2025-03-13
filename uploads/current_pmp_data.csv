@@ -1,0 +1,4 @@
+section_id,measurement_date,temperature,deflection,surface_condition,traffic_volume,pci,road_category,latitude,longitude
+1001,2025-03-10,23.5,4.1,Good,1250,85,Arterial,34.052,-118.243
+1002,2025-03-10,22.8,3.9,Fair,980,65,Collector,34.048,-118.247
+1003,2025-03-11,24.2,4.3,Poor,1540,45,Local,34.055,-118.240

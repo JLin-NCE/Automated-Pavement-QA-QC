@@ -1,0 +1,7 @@
+section_id,measurement_date,temperature,deflection,surface_condition,iri_value,rutting,pci,road_category,latitude,longitude
+1001,2024-03-15,22.0,4.0,Good,2.1,5.2,90,Arterial,34.052,-118.243
+1001,2023-04-10,23.2,4.2,Good,1.9,4.8,95,Arterial,34.052,-118.243
+1002,2024-03-20,21.5,3.8,Fair,2.8,6.5,70,Collector,34.048,-118.247
+1002,2023-04-12,22.5,3.7,Good,2.3,5.9,80,Collector,34.048,-118.247
+1003,2024-03-22,24.0,4.5,Fair,3.2,7.1,50,Local,34.055,-118.240
+1003,2023-04-15,23.8,4.2,Good,2.7,6.3,65,Local,34.055,-118.240

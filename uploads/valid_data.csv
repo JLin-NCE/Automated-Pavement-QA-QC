@@ -1,0 +1,4 @@
+section_id,measurement_date,temperature,deflection,pci,road_category,latitude,longitude
+1234,2025-03-12,22.5,3.8,78,Arterial,34.060,-118.250
+5678,2025-03-12,24.1,4.2,62,Collector,34.065,-118.255
+9012,2025-03-13,23.0,4.5,55,Local,34.070,-118.260

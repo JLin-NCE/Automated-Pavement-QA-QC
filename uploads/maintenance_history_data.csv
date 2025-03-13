@@ -1,0 +1,5 @@
+section_id,maintenance_date,maintenance_type,cost,contractor,warranty_period,latitude,longitude
+1001,2024-01-15,Crack Sealing,12500,ABC Paving,12,34.052,-118.243
+1002,2023-11-20,Patching,8750,XYZ Maintenance,6,34.048,-118.247
+1002,2024-02-10,Overlay,35000,ABC Paving,24,34.048,-118.247
+1003,2023-09-05,Reconstruction,125000,Highway Solutions,36,34.055,-118.240

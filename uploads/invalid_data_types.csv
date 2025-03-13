@@ -1,0 +1,3 @@
+section_id,measurement_date,temperature,deflection,pci,road_category,latitude,longitude
+ABCD,2025-13-40,hot,5.2,invalid,Unknown,34.085,-118.275
+1234,2025-02-30,25C,high,90.5,Highway,34.090,-118.280

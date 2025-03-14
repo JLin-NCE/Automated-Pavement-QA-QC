@@ -1,0 +1,81 @@
+/* minitab-styles.css - Styles for Minitab integration */
+
+/* Modal styling specific to Minitab */
+#minitabModal .modal-body {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+#minitabModal .modal-body h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+#minitabModal .modal-body ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#minitabModal .modal-body li {
+    margin-bottom: 0.75rem;
+}
+
+#minitabModal .modal-body ul {
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+#minitabModal .modal-body ul li {
+    margin-bottom: 0.5rem;
+}
+
+#minitabModal .alert {
+    display: block;
+    background-color: #e6f7ff;
+    border-left: 4px solid #1890ff;
+    color: #0c53b7;
+    margin-top: 1rem;
+}
+
+#minitabModal .alert i {
+    color: #1890ff;
+}
+
+/* Minitab export buttons styling */
+#exportToMinitabBtn, #exportToMinitabServerBtn {
+    background-color: #37474f;
+    color: white;
+    border: none;
+}
+
+#exportToMinitabBtn:hover, #exportToMinitabServerBtn:hover {
+    background-color: #263238;
+}
+
+/* Minitab visualization placeholders */
+.minitab-placeholder {
+    background-color: #f5f5f5;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.minitab-placeholder i {
+    font-size: 3rem;
+    color: #90a4ae;
+    margin-bottom: 1rem;
+}
+
+.minitab-placeholder h4 {
+    font-size: 1.2rem;
+    color: #546e7a;
+    margin-bottom: 0.5rem;
+}
+
+.minitab-placeholder p {
+    color: #78909c;
+}
